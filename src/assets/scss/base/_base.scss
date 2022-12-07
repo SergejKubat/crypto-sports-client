@@ -1,10 +1,35 @@
-* {
+*,
+*::after,
+*::before {
     margin: 0;
     padding: 0;
+    box-sizing: inherit;
+}
+
+*:focus {
+    outline: none;
+}
+
+html {
+    font-size: 62.5%;
+
+    @include respond(4k) {
+        font-size: 75%;
+    }
+
+    @include respond(tablet) {
+        font-size: 56.25%;
+    }
+
+    @include respond(mobileS) {
+        font-size: 50%;
+    }
 }
 
 body {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
 }
