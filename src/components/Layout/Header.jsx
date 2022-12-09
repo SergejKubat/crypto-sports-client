@@ -10,7 +10,9 @@ const Header = () => {
             <div className="header-logo">
                 <Link to="/">
                     <img src={Logo} alt="Logo" />
-                    <h2>Crypto Sports</h2>
+                    <h2>
+                        Crypto<span style={{ color: "#b56959" }}>Sports</span>
+                    </h2>
                 </Link>
             </div>
             <nav className="header-nav">

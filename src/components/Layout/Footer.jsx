@@ -31,7 +31,7 @@ const Footer = () => {
                     <h3>About Us</h3>
                     <ul>
                         <li>
-                            <Link to="/">Who We Are?</Link>
+                            <Link to="/">Who We Are</Link>
                         </li>
                         <li>
                             <Link to="/login">Blog</Link>
@@ -78,7 +78,7 @@ const Footer = () => {
                     </ul>
                 </div>
             </div>
-            <p className="footer-copyright">@ CryptoSports 2022</p>
+            <p className="footer-copyright">@ CryptoSports {new Date().getFullYear()}</p>
         </footer>
     );
 };

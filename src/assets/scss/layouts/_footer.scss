@@ -3,12 +3,24 @@
     color: $color-white;
     background-color: #1f262d;
 
+    @include respond(laptop) {
+        padding: 6rem 2.5rem;
+    }
+
+    @include respond(mobileL) {
+        padding: 4rem 2rem;
+    }
+
     &-row {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
         gap: 3rem;
         margin-bottom: 6rem;
+
+        @include respond(mobileL) {
+            justify-content: flex-start;
+        }
     }
 
     &-col {
