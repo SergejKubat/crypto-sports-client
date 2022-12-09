@@ -1,0 +1,58 @@
+.footer {
+    padding: 8rem 3rem;
+    color: $color-white;
+    background-color: #1f262d;
+
+    &-row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 3rem;
+        margin-bottom: 6rem;
+    }
+
+    &-col {
+        flex: 0 0 30rem;
+
+        & h3 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        & ul {
+            list-style-type: none;
+
+            & li {
+                padding: 0.5rem 0;
+                font-size: 1.4rem;
+            }
+
+            & a {
+                transition: color 0.3s ease-in-out;
+
+                &:hover {
+                    color: $color-blue;
+                }
+            }
+        }
+    }
+
+    &-socials {
+        display: flex;
+
+        & .link {
+            padding: 1rem;
+            font-size: 2rem;
+
+            &:first-child {
+                padding-left: 0;
+            }
+        }
+    }
+
+    &-copyright {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+}
