@@ -61,7 +61,7 @@ const LoginPage = () => {
                         validateCb={(value) => value && validator.isStrongPassword(value)}
                     />
                     <p className="login-forgot">
-                        <Link to="/">Forgot Password?</Link>
+                        <Link to="/forgotten-password">Forgot Password?</Link>
                     </p>
                     <p className="login-terms">
                         By continuing past this page, you agree to the <Link to="/">Terms of Use</Link> and understand that information will
