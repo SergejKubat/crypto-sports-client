@@ -34,13 +34,13 @@ const Footer = () => {
                             <Link to="/">Who We Are</Link>
                         </li>
                         <li>
-                            <Link to="/login">Blog</Link>
+                            <Link to="/">Blog</Link>
                         </li>
                         <li>
-                            <Link to="/register">Contact Us</Link>
+                            <Link to="/">Contact Us</Link>
                         </li>
                         <li>
-                            <Link to="/profile">Ticket Your Event</Link>
+                            <Link to="/">Ticket Your Event</Link>
                         </li>
                         <li>
                             <Link to="/">Privacy Policy</Link>
