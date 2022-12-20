@@ -24,13 +24,10 @@ const Header = () => {
                         <Link to="/">Basketball</Link>
                     </li>
                     <li>
-                        <Link to="/">Tenis</Link>
+                        <Link to="/">Tennis</Link>
                     </li>
                     <li>
                         <Link to="/">Volleyball</Link>
-                    </li>
-                    <li>
-                        <Link to="/">Boxing</Link>
                     </li>
                 </ul>
                 <ul className="header-list">
