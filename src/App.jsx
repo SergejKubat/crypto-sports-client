@@ -5,6 +5,7 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import EventPage from "./pages/Event";
+import CategoryPage from "./pages/Category";
 import OrganizerPage from "./pages/Organizer";
 import ProfileDetailsPage from "./pages/Profile/Details";
 import MyTicketsPage from "./pages/Profile/Details";
@@ -23,8 +24,9 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/events/:id" element={<EventPage />} />
-                <Route path="/organizers/:id" element={<OrganizerPage />} />
+                <Route path="/event/:id" element={<EventPage />} />
+                <Route path="/organizer/:id" element={<OrganizerPage />} />
+                <Route path="/category/:name" element={<CategoryPage />} />
                 <Route path="/profile" element={<ProfileDetailsPage />} />
                 <Route path="/profile/my-tickets" element={<MyTicketsPage />} />
                 <Route path="/forgotten-password" element={<ForgottenPasswordPage />} />
