@@ -4,7 +4,7 @@ import EventCard from "../Cards/EventCard";
 
 const EventList = (props) => {
     return (
-        <div className="list">
+        <div className="list" style={props.style}>
             {props.heading ? <h3 className="list-heading">{props.heading}</h3> : null}
             <ul className="list-content">
                 <EventCard />

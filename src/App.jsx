@@ -13,12 +13,15 @@ import ForgottenPasswordPage from "./pages/ForgottenPassword";
 import ResetPasswordPage from "./pages/ResetPassword";
 import NotFoundPage from "./pages/NotFound";
 
+import ScrollToTop from "./components/Layout/ScrollToTop";
+
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 
 const App = () => {
     return (
         <Router>
+            <ScrollToTop />
             <Header />
             <Routes>
                 <Route path="/" element={<HomePage />} />
