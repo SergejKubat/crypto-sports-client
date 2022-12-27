@@ -7,7 +7,7 @@ import TestImage from "../../assets/images/test.jpg";
 const OrganizerCard = () => {
     return (
         <li className="organizer-card">
-            <Link to={`/organizer/id`}>
+            <Link to={`/organizers/id`}>
                 <figure className="organizer-card-figure">
                     <img src={TestImage} alt="organizer name" className="organizer-card-img" />
                     <div className="organizer-card-details">

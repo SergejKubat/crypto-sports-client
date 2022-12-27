@@ -1,4 +1,4 @@
-.organizer {
+.event {
     &-header {
         display: flex;
         justify-content: center;
@@ -29,14 +29,13 @@
         @include respond(mobileL) {
             order: 1;
         }
-    }
 
-    &-contact {
-        margin-top: 1rem;
+        & a {
+            transition: color 0.3s ease-in-out;
 
-        & a > svg {
-            margin: 0 0.5rem;
-            font-size: 2rem;
+            &:hover {
+                color: #ccc;
+            }
         }
     }
 
@@ -67,7 +66,34 @@
             margin: 1rem 0;
             font-size: 2rem;
             font-weight: 400;
-            color: #69747c;
+        }
+    }
+
+    &-details {
+        margin-bottom: 1.8rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #dbd6d6;
+    }
+
+    &-data {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.8rem;
+
+        & p {
+            font-size: 1.6rem;
+        }
+
+        & p:first-child {
+            display: flex;
+            width: 9rem;
+            margin-right: 1rem;
+            font-weight: 600;
+        }
+
+        .icon {
+            margin-right: 0.5rem;
+            font-size: 2.6rem;
         }
     }
 }

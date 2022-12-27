@@ -7,7 +7,7 @@ import TestImage from "../../assets/images/test.jpg";
 const EventCard = () => {
     return (
         <li className="event-card">
-            <Link to={`/event/id`}>
+            <Link to={`/events/id`}>
                 <figure className="event-card-figure">
                     <img src={TestImage} alt="Event name" className="event-card-img" />
                 </figure>

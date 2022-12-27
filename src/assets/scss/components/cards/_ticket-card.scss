@@ -1,0 +1,125 @@
+.ticket-card {
+    display: flex;
+    margin-bottom: 2.5rem;
+    background-color: $color-white;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px 0px;
+
+    @include respond(tablet) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &-image {
+        max-width: 30rem;
+        height: auto;
+
+        @include respond(mobileL) {
+            max-width: 100%;
+        }
+    }
+
+    &-details,
+    &-purchase {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 3rem;
+
+        @include respond(mobileL) {
+            padding: 1rem 2rem;
+        }
+    }
+
+    &-details {
+        justify-content: space-between;
+        border-right: 1px dashed #404040;
+
+        @include respond(tablet) {
+            border-right: none;
+        }
+    }
+
+    &-name {
+        font-size: 2.4rem;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: 0.1rem;
+        color: #4a437e;
+    }
+
+    &-description {
+        margin: 1rem 0;
+    }
+
+    &-price {
+        & p {
+            &:first-child {
+                font-size: 1.6rem;
+                font-weight: 700;
+            }
+
+            & .eth {
+                font-size: 2.2rem;
+            }
+        }
+    }
+
+    &-purchase {
+        justify-content: center;
+        align-items: center;
+
+        &-title {
+            font-size: 2rem;
+        }
+    }
+
+    &-quantity {
+        position: relative;
+        display: flex;
+        height: 3.6rem;
+        width: 10rem;
+        margin: 1rem 0;
+        border-radius: 0.5rem;
+        background-color: #f6f6f6;
+
+        &.locked {
+            opacity: 0.5;
+            user-select: none;
+        }
+
+        &-add,
+        &-remove {
+            height: 100%;
+            width: 30%;
+            background: transparent;
+            border: none;
+            font-size: 2.2rem;
+            color: inherit;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+
+            &:hover {
+                background-color: darken(#f6f6f6, 10%);
+            }
+        }
+
+        &-input {
+            text-align: center;
+            height: 100%;
+            width: 40%;
+            border: none;
+            outline: none;
+            font-size: 2rem;
+            font-weight: 700;
+            color: inherit;
+            background: transparent;
+            -webkit-appearance: textfield !important;
+            -moz-appearance: textfield !important;
+            appearance: textfield !important;
+        }
+
+        &-input::-webkit-inner-spin-button,
+        &-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+}
