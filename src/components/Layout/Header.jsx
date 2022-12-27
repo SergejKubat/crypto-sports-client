@@ -18,16 +18,16 @@ const Header = () => {
             <nav className="header-nav">
                 <ul className="header-list">
                     <li>
-                        <Link to="/">Football</Link>
+                        <Link to="/category/football">Football</Link>
                     </li>
                     <li>
-                        <Link to="/">Basketball</Link>
+                        <Link to="/category/basketball">Basketball</Link>
                     </li>
                     <li>
-                        <Link to="/">Tennis</Link>
+                        <Link to="/category/tennis">Tennis</Link>
                     </li>
                     <li>
-                        <Link to="/">Volleyball</Link>
+                        <Link to="/category/volleyball">Volleyball</Link>
                     </li>
                 </ul>
                 <ul className="header-list">
