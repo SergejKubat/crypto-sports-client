@@ -1,0 +1,19 @@
+.my-tickets {
+    display: flex;
+    justify-content: center;
+
+    &-container {
+        width: 70%;
+        margin-top: 5rem;
+
+        @include respond(laptop) {
+            width: 90%;
+        }
+
+        & h2 {
+            margin: 1rem 0;
+            font-size: 2rem;
+            font-weight: 400;
+        }
+    }
+}

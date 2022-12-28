@@ -1,0 +1,107 @@
+.purchased-ticket-card {
+    display: flex;
+    margin-bottom: 2.5rem;
+    background-color: $color-white;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px 0px;
+
+    @include respond(tablet) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &-image {
+        max-width: 30rem;
+        height: auto;
+
+        @include respond(mobileL) {
+            max-width: 100%;
+        }
+    }
+
+    &-details {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 3rem;
+
+        @include respond(mobileL) {
+            padding: 1rem 2rem;
+        }
+    }
+
+    &-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 3rem;
+        border-right: 1px dashed #404040;
+
+        @include respond(tablet) {
+            padding: 3rem 2rem;
+            border-right: none;
+        }
+
+        & .date {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-weight: 700;
+            border-top: 1px solid gray;
+            border-bottom: 1px solid gray;
+
+            .month {
+                font-size: 2.2rem;
+                color: #d83565;
+            }
+        }
+
+        & .info {
+            text-align: center;
+
+            h3 {
+                font-size: 3rem;
+                font-weight: 700;
+                letter-spacing: 0.1rem;
+                color: #4a437e;
+
+                @include respond(tablet) {
+                    margin-top: 2rem;
+                }
+            }
+
+            p {
+                font-size: 2rem;
+                font-weight: 400;
+                color: #d83565;
+            }
+        }
+
+        & .location {
+            padding: 0.5rem 0;
+            text-align: center;
+
+            & span {
+                font-weight: 700;
+                color: #4a437e;
+            }
+        }
+    }
+
+    &-description {
+        margin: 1rem 0;
+    }
+
+    &-actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: 20rem;
+        padding: 2rem 3rem;
+
+        @include respond(tablet) {
+            margin-bottom: 2rem;
+            padding: 0;
+        }
+    }
+}
