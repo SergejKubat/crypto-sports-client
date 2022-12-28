@@ -1,0 +1,17 @@
+.profile {
+    padding: 8rem 2rem;
+    text-align: center;
+
+    &-avatar {
+        border-radius: 2rem;
+    }
+
+    &-details {
+        padding: 2rem 0;
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+    }
+}

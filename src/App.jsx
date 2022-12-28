@@ -7,7 +7,7 @@ import RegisterPage from "./pages/Register";
 import EventPage from "./pages/Event";
 import CategoryPage from "./pages/Category";
 import OrganizerPage from "./pages/Organizer";
-import ProfileDetailsPage from "./pages/Profile/Details";
+import ProfilePage from "./pages/Profile/Details";
 import MyTicketsPage from "./pages/Profile/MyTickets";
 import ForgottenPasswordPage from "./pages/ForgottenPassword";
 import ResetPasswordPage from "./pages/ResetPassword";
@@ -32,7 +32,7 @@ const App = () => {
                 <Route path="category/:name" element={<CategoryPage />} />
                 <Route path="forgotten-password" element={<ForgottenPasswordPage />} />
                 <Route path="reset-password" element={<ResetPasswordPage />} />
-                <Route path="/profile" element={<ProfileDetailsPage />}></Route>
+                <Route path="/profile" element={<ProfilePage />}></Route>
                 <Route path="/my-tickets" element={<MyTicketsPage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
