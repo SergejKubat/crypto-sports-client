@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import TicketCard from "../Cards/TicketCard";
 import Button from "../Form/Button";
+import PurchaseTicketsModal from "../Modal/PurchaseTicketsModal";
 
 import TicketImg from "../../assets/images/ticket.png";
 
@@ -11,6 +12,7 @@ const Purchase = () => {
     const [platinumAmount, setPlatinumAmount] = useState(0);
     const [diamondAmount, setDiamondAmount] = useState(0);
     const [ticketsAvailable /*, setTicketsAvailable*/] = useState([100, 50, 25, 10]);
+    const [modalOpened, setModalOpened] = useState(false);
 
     const changeAmountOfTickets = (type, amount) => {
         switch (type) {
@@ -73,7 +75,13 @@ const Purchase = () => {
                 ethUSDRatio={1281.12}
                 available={ticketsAvailable[3]}
             />
-            <Button text="Next" type="success" style={{ display: "block", margin: "0 auto", width: "35rem" }} />
+            <Button
+                text="Next"
+                type="success"
+                style={{ display: "block", margin: "0 auto", width: "35rem" }}
+                onClick={() => setModalOpened(true)}
+            />
+            <PurchaseTicketsModal show={modalOpened} onHide={() => setModalOpened(false)} />
         </div>
     );
 };
