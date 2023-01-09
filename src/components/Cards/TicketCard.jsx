@@ -1,37 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 
-import TicketImg from "../../assets/images/ticket.png";
-
-const TicketCard = () => {
-    const [quantity, setQuantity] = useState(0);
-
+const TicketCard = (props) => {
     const add = () => {
-        if (quantity >= 10) {
+        if (props.amount >= props.available) {
             return;
         }
 
-        setQuantity(quantity + 1);
+        props.changeAmount(props.amount + 1);
     };
 
     const remove = () => {
-        if (quantity === 0) return;
+        if (props.amount === 0) return;
 
-        setQuantity(quantity - 1);
+        props.changeAmount(props.amount - 1);
     };
 
     return (
         <div className="ticket-card">
-            <img src={TicketImg} alt="Ticket Name" className="ticket-card-image" />
+            <img src={props.image} alt={props.name} className="ticket-card-image" />
             <div className="ticket-card-details">
-                <h3 className="ticket-card-name">Ticket name</h3>
-                <p className="ticket-card-description">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, facilis? Ex, eveniet! Ea, perspiciatis dolorum,
-                    provident sapiente dolore cupiditate mollitia, porro nemo eaque ex officiis.
-                </p>
+                <h3 className="ticket-card-name">{props.name}</h3>
+                <p className="ticket-card-description">{props.description}</p>
                 <div className="ticket-card-price">
                     <p>Price</p>
                     <p>
-                        <span className="eth">0.02 ETH</span> ≈ 23 $
+                        <span className="eth">{props.ethPrice} ETH</span> ≈ {(props.ethPrice * props.ethUSDRatio).toFixed(3)} $
                     </p>
                 </div>
             </div>
@@ -41,12 +34,12 @@ const TicketCard = () => {
                     <button className="ticket-card-quantity-remove" onClick={() => remove()}>
                         -
                     </button>
-                    <input type="number" min="0" placeholder="0" value={quantity} className="ticket-card-quantity-input" readOnly />
+                    <input type="number" min="0" placeholder="0" value={props.amount} className="ticket-card-quantity-input" readOnly />
                     <button className="ticket-card-quantity-add" onClick={() => add()}>
                         +
                     </button>
                 </div>
-                <p>Available: 10</p>
+                <p>Available: {props.available}</p>
             </div>
         </div>
     );
