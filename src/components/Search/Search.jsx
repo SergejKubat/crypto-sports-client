@@ -49,7 +49,7 @@ const Search = () => {
                         onChange={getResults}
                     />
                     <GoSearch className="search-input-icon" />
-                    <Button text="Search" />
+                    <Button text="Search" style={{ margin: "0rem" }} />
 
                     {results.length > 0 ? (
                         <ul className="search-results">
