@@ -29,6 +29,7 @@
     }
 
     &-details {
+        flex-basis: 70%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -49,6 +50,10 @@
             border-top: 1px solid gray;
             border-bottom: 1px solid gray;
 
+            & p {
+                margin-bottom: 0;
+            }
+
             .month {
                 font-size: 2.2rem;
                 color: #d83565;
@@ -56,6 +61,7 @@
         }
 
         & .info {
+            margin-top: 1rem;
             text-align: center;
 
             h3 {

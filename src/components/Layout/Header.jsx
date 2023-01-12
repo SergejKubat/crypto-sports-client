@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
-import { Navbar, Container /*, NavDropdown*/ } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import { Navbar, NavDropdown, Container } from "react-bootstrap";
 
 import Logo from "../../assets/images/logo.png";
 
 const Header = () => {
+    const [isAuth] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        setIsExpanded(false);
+    }, [pathname]);
+
     return (
-        <Navbar fixed="top" expand="lg" style={{ backgroundColor: "#fff" }}>
+        <Navbar fixed="top" expand="lg" expanded={isExpanded} style={{ padding: 0, backgroundColor: "#fff" }}>
             <Container fluid>
                 <Navbar.Brand className="header-logo">
                     <Link to="/">
@@ -17,9 +26,8 @@ const Header = () => {
                         </h2>
                     </Link>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setIsExpanded(!isExpanded)} />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown"></NavDropdown>*/}
                     <nav className="header-nav">
                         <ul className="header-list">
                             <li>
@@ -35,14 +43,27 @@ const Header = () => {
                                 <Link to="/category/volleyball">Volleyball</Link>
                             </li>
                         </ul>
-                        <ul className="header-list">
-                            <li>
-                                <Link to="/login">Sign In</Link>
-                            </li>
-                            <li>
-                                <Link to="/register">Sing Up</Link>
-                            </li>
-                        </ul>
+                        {isAuth ? (
+                            <NavDropdown title="username" id="navbarScrollingDropdown">
+                                <NavDropdown.Item as="div">
+                                    <Link to="/profile">Account</Link>
+                                </NavDropdown.Item>
+                                <NavDropdown.Item as="div">
+                                    <Link to="my-tickets">My Tickets</Link>
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item as="div">Sign Out</NavDropdown.Item>
+                            </NavDropdown>
+                        ) : (
+                            <ul className="header-list user">
+                                <li>
+                                    <Link to="/login">Sign In</Link>
+                                </li>
+                                <li>
+                                    <Link to="/register">Sing Up</Link>
+                                </li>
+                            </ul>
+                        )}
                     </nav>
                 </Navbar.Collapse>
             </Container>
