@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { Link, useLocation } from "react-router-dom";
 import { Navbar, NavDropdown, Container } from "react-bootstrap";
 
+import { UserContext } from "../../context/UserContext";
+
 import Logo from "../../assets/images/logo.png";
 
 const Header = () => {
-    const [isAuth] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
 
     const { pathname } = useLocation();
+
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         setIsExpanded(false);
@@ -43,7 +46,7 @@ const Header = () => {
                                 <Link to="/category/volleyball">Volleyball</Link>
                             </li>
                         </ul>
-                        {isAuth ? (
+                        {user ? (
                             <NavDropdown title="username" id="navbarScrollingDropdown">
                                 <NavDropdown.Item as="div">
                                     <Link to="/profile">Account</Link>
