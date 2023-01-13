@@ -6,7 +6,7 @@ import { Navbar, NavDropdown, Container } from "react-bootstrap";
 import Logo from "../../assets/images/logo.png";
 
 const Header = () => {
-    const [isAuth] = useState(false);
+    const [isAuth] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
 
     const { pathname } = useLocation();

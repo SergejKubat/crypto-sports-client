@@ -8,7 +8,7 @@ import Button from "../Form/Button";
 import { WalletContext } from "../../context/WalletContext";
 
 const ConnectWalletModal = (props) => {
-    const { walletAddress, setWalletAddress } = useContext(WalletContext);
+    const { setWalletAddress } = useContext(WalletContext);
 
     const connectWallet = () => {
         if (window.ethereum) {

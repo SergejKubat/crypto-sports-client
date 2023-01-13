@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import axios from "axios";
 
 import TicketCard from "../Cards/TicketCard";
 import Button from "../Form/Button";
 import PurchaseTicketsModal from "../Modal/PurchaseTicketsModal";
+import ConnectWalletModal from "../Modal/ConnectWalletModal";
+
+import { WalletContext } from "../../context/WalletContext";
 
 import TicketImg from "../../assets/images/ticket.png";
 
@@ -24,6 +27,9 @@ const Purchase = () => {
     const [ethUSDRatio, setEthUSDRatio] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [isModalOpened, setIsModalOpened] = useState(false);
+    const [isModalOpenedWallet, setIsModalOpenedWallet] = useState(false);
+
+    const { walletAddress } = useContext(WalletContext);
 
     const changeAmountOfTickets = (type, amount) => {
         switch (type) {
@@ -110,7 +116,19 @@ const Purchase = () => {
                 available={ticketsAvailable[3]}
             />
             {silverAmount || goldAmount || platinumAmount || diamondAmount ? (
-                <Button text="Next" style={{ display: "block", margin: "0 auto", width: "35rem" }} onClick={() => setIsModalOpened(true)} />
+                walletAddress ? (
+                    <Button
+                        text="Next"
+                        style={{ display: "block", margin: "0 auto", width: "35rem" }}
+                        onClick={() => setIsModalOpened(true)}
+                    />
+                ) : (
+                    <Button
+                        text="Connect Wallet"
+                        style={{ display: "block", margin: "0 auto", width: "35rem" }}
+                        onClick={() => setIsModalOpenedWallet(true)}
+                    />
+                )
             ) : null}
             <PurchaseTicketsModal
                 show={isModalOpened}
@@ -126,6 +144,7 @@ const Purchase = () => {
                 ethUSDRatio={ethUSDRatio}
                 onHide={() => setIsModalOpened(false)}
             />
+            <ConnectWalletModal show={isModalOpenedWallet} onHide={() => setIsModalOpenedWallet(false)} />
         </div>
     );
 };
