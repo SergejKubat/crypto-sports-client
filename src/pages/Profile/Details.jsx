@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import Blockies from "react-blockies";
 
 import ConnectWalletModal from "../../components/Modal/ConnectWalletModal";
+import DeleteAccountModal from "../../components/Modal/DeleteAccountModal";
 import Button from "../../components/Form/Button";
 
 import { UserContext } from "../../context/UserContext";
@@ -12,6 +13,7 @@ import { getEllipsisText } from "../../utils/format";
 
 const ProfilePage = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
+    const [isDAModalOpened, setIsDAModalOpened] = useState(false);
 
     const { user } = useContext(UserContext);
 
@@ -35,8 +37,9 @@ const ProfilePage = () => {
                     <Button text="Connect Wallet" onClick={() => setIsModalOpened(true)} />
                 )}
             </div>
-            <Button text="Delete Account" type="danger" />
+            <Button type="danger" text="Delete Account" onClick={() => setIsDAModalOpened(true)} />
             <ConnectWalletModal show={isModalOpened} onHide={() => setIsModalOpened(false)} />
+            <DeleteAccountModal show={isDAModalOpened} onHide={() => setIsDAModalOpened(false)} />
         </section>
     );
 };
