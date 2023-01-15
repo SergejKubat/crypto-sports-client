@@ -50,7 +50,7 @@ const RegisterPage = () => {
         };
 
         axios
-            .post(`http://localhost:5000/api/register`, data, { withCredentials: true })
+            .post(`${import.meta.env.VITE_API_URL}/register`, data, { withCredentials: true })
             .then((response) => {
                 setUser(response.data);
 
@@ -110,7 +110,7 @@ const RegisterPage = () => {
                         onChange={setConfirmPassword}
                         touched={touched}
                         required={true}
-                        errorMessage="Passwords do not match."
+                        errorMessage="Passwords does not match."
                         validateCb={(value) => value && value === password}
                     />
                     <p className="register-terms">

@@ -1,22 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import validator from "validator";
 
 import Input from "../components/Form/Input";
 import Button from "../components/Form/Button";
 
+import { UserContext } from "../context/UserContext";
+
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [touched, setTouched] = useState(false);
-    //const [error, setError] = useState("");
+    const [error, setError] = useState("");
+
+    const navigate = useNavigate();
+
+    const { setUser } = useContext(UserContext);
 
     const login = (e) => {
         e.preventDefault();
 
         setTouched(true);
-        // setError("");
+        setError("");
 
         if (username.length < 4) {
             return;
@@ -26,9 +33,23 @@ const LoginPage = () => {
             return;
         }
 
-        console.log("login");
+        const data = {
+            username: username,
+            password: password
+        };
 
-        // @TODO: Login logic
+        axios
+            .post(`${import.meta.env.VITE_API_URL}/login`, data, { withCredentials: true })
+            .then((response) => {
+                setUser(response.data);
+
+                window.localStorage.setItem("user", JSON.stringify(response.data));
+
+                navigate("/profile");
+            })
+            .catch((error) => {
+                setError(error.response.data.message);
+            });
     };
 
     return (
@@ -67,13 +88,13 @@ const LoginPage = () => {
                         By continuing past this page, you agree to the <Link to="/">Terms of Use</Link> and understand that information will
                         be used as described in our <Link to="/">Privacy Policy</Link>.
                     </p>
+                    {error ? (
+                        <p className="input-error" style={{ textAlign: "center" }}>
+                            {error}
+                        </p>
+                    ) : null}
                     <Button text="Sign In" />
                 </form>
-                {/*error ? (
-                    <p className="input-error" style={{ marginTop: "1rem" }}>
-                        {error}
-                    </p>
-                ) : null*/}
             </div>
         </section>
     );

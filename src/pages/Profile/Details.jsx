@@ -5,12 +5,15 @@ import Blockies from "react-blockies";
 import ConnectWalletModal from "../../components/Modal/ConnectWalletModal";
 import Button from "../../components/Form/Button";
 
+import { UserContext } from "../../context/UserContext";
 import { WalletContext } from "../../context/WalletContext";
 
 import { getEllipsisText } from "../../utils/format";
 
 const ProfilePage = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
+
+    const { user } = useContext(UserContext);
 
     const { walletAddress } = useContext(WalletContext);
 
@@ -19,10 +22,10 @@ const ProfilePage = () => {
             <Blockies seed="username" size={15} scale={10} color="#3b2076" bgColor="#2a79dd" className="profile-avatar" />
             <div className="profile-details">
                 <p>
-                    <b>Username:</b> sergej99
+                    <b>Username:</b> {user.username}
                 </p>
                 <p>
-                    <b>Email:</b> sergej.kubat18@gmail.com
+                    <b>Email:</b> {user.email}
                 </p>
                 {walletAddress ? (
                     <p>

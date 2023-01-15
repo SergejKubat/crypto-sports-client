@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Navbar, NavDropdown, Container } from "react-bootstrap";
 
 import { UserContext } from "../../context/UserContext";
@@ -12,7 +13,24 @@ const Header = () => {
 
     const { pathname } = useLocation();
 
-    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const { user, setUser } = useContext(UserContext);
+
+    const logOut = () => {
+        axios
+            .get(`${import.meta.env.VITE_API_URL}/logout`, { withCredentials: true })
+            .then(() => {
+                setUser(null);
+
+                window.localStorage.removeItem("user");
+
+                navigate("/");
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+            });
+    };
 
     useEffect(() => {
         setIsExpanded(false);
@@ -47,7 +65,7 @@ const Header = () => {
                             </li>
                         </ul>
                         {user ? (
-                            <NavDropdown title="username" id="navbarScrollingDropdown">
+                            <NavDropdown title={`${user.username}`} id="navbarScrollingDropdown">
                                 <NavDropdown.Item as="div">
                                     <Link to="/profile">Account</Link>
                                 </NavDropdown.Item>
@@ -55,7 +73,9 @@ const Header = () => {
                                     <Link to="my-tickets">My Tickets</Link>
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item as="div">Sign Out</NavDropdown.Item>
+                                <NavDropdown.Item as="div" style={{ cursor: "pointer" }} onClick={logOut}>
+                                    Sign Out
+                                </NavDropdown.Item>
                             </NavDropdown>
                         ) : (
                             <ul className="header-list user">
