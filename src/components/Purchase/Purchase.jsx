@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import TicketCard from "../Cards/TicketCard";
 import Button from "../Form/Button";
 import PurchaseTicketsModal from "../Modal/PurchaseTicketsModal";
 import ConnectWalletModal from "../Modal/ConnectWalletModal";
 
+import { UserContext } from "../../context/UserContext";
 import { WalletContext } from "../../context/WalletContext";
 
 import TicketImg from "../../assets/images/ticket.png";
@@ -29,6 +31,9 @@ const Purchase = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [isModalOpenedWallet, setIsModalOpenedWallet] = useState(false);
 
+    const navigate = useNavigate();
+
+    const { user } = useContext(UserContext);
     const { walletAddress } = useContext(WalletContext);
 
     const changeAmountOfTickets = (type, amount) => {
@@ -116,17 +121,25 @@ const Purchase = () => {
                 available={ticketsAvailable[3]}
             />
             {silverAmount || goldAmount || platinumAmount || diamondAmount ? (
-                walletAddress ? (
-                    <Button
-                        text="Next"
-                        style={{ display: "block", margin: "0 auto", width: "35rem" }}
-                        onClick={() => setIsModalOpened(true)}
-                    />
+                user ? (
+                    walletAddress ? (
+                        <Button
+                            text="Next"
+                            style={{ display: "block", margin: "0 auto", width: "35rem" }}
+                            onClick={() => setIsModalOpened(true)}
+                        />
+                    ) : (
+                        <Button
+                            text="Connect Wallet"
+                            style={{ display: "block", margin: "0 auto", width: "35rem" }}
+                            onClick={() => setIsModalOpenedWallet(true)}
+                        />
+                    )
                 ) : (
                     <Button
-                        text="Connect Wallet"
+                        text="Sign In"
                         style={{ display: "block", margin: "0 auto", width: "35rem" }}
-                        onClick={() => setIsModalOpenedWallet(true)}
+                        onClick={() => navigate("/login")}
                     />
                 )
             ) : null}

@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 
+import axios from "axios";
+import Web3 from "web3";
 import { Modal, CloseButton } from "react-bootstrap";
 
 import MetaMaskIcon from "../../assets/images/icons/metamask.webp";
@@ -10,21 +12,54 @@ import { WalletContext } from "../../context/WalletContext";
 const ConnectWalletModal = (props) => {
     const { setWalletAddress } = useContext(WalletContext);
 
-    const connectWallet = () => {
-        if (window.ethereum) {
-            window.ethereum
-                .request({ method: "eth_requestAccounts" })
-                .then((address) => {
-                    setWalletAddress(address);
+    const web3 = new Web3(window.ethereum);
 
-                    props.onHide();
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                });
-        } else {
-            alert("Please install MetaMask!");
-        }
+    const connectWallet = () => {
+        if (!window.ethereum) alert("Please install MetaMask!");
+
+        // connect account
+        window.ethereum
+            .request({ method: "eth_requestAccounts" })
+            .then((accounts) => {
+                const account = accounts[0];
+
+                // generate nonce
+                axios
+                    .get(`${import.meta.env.VITE_API_URL}/users/generateNonce`, { withCredentials: true })
+                    .then(async (response) => {
+                        // sign message
+                        const message = response.data.message;
+
+                        const signature = await web3.eth.personal.sign(message, account).catch((err) => {
+                            console.log("You denied message signature: ", err);
+
+                            props.onHide();
+                        });
+
+                        const data = {
+                            walletAddress: account,
+                            signature: signature
+                        };
+
+                        // link wallet
+                        axios
+                            .put(`${import.meta.env.VITE_API_URL}/users/linkWallet`, data, { withCredentials: true })
+                            .then(() => {
+                                setWalletAddress(account);
+
+                                props.onHide();
+                            })
+                            .catch((error) => {
+                                console.log(error.response.data.message);
+                            });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
     };
 
     return (
