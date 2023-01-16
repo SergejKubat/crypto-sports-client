@@ -22,7 +22,7 @@ const TicketCard = (props) => {
                 <h3 className="ticket-card-name">{props.name}</h3>
                 <p className="ticket-card-description">{props.description}</p>
                 <div className="ticket-card-price">
-                    <p>Price</p>
+                    <p className="m-0">Price</p>
                     <p>
                         <span className="eth">{props.ethPrice} ETH</span> ≈ {(props.ethPrice * props.ethUSDRatio).toFixed(3)} $
                     </p>

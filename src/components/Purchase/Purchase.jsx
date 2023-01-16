@@ -11,16 +11,7 @@ import ConnectWalletModal from "../Modal/ConnectWalletModal";
 import { UserContext } from "../../context/UserContext";
 import { WalletContext } from "../../context/WalletContext";
 
-import TicketImg from "../../assets/images/ticket.png";
-
-const prices = {
-    Silver: 0.0001,
-    Gold: 0.0003,
-    Platinum: 0.0005,
-    Diamond: 0.001
-};
-
-const Purchase = () => {
+const Purchase = (props) => {
     const [silverAmount, setSilverAmount] = useState(0);
     const [goldAmount, setGoldAmount] = useState(0);
     const [platinumAmount, setPlatinumAmount] = useState(0);
@@ -56,8 +47,13 @@ const Purchase = () => {
     };
 
     const calculateTotalPrice = () => {
+        const silverPrice = props.tickets.Silver ? props.tickets.Silver.price : 0;
+        const goldPrice = props.tickets.Gold ? props.tickets.Gold.price : 0;
+        const platinumPrice = props.tickets.Platinum ? props.tickets.Platinum.price : 0;
+        const diamondPrice = props.tickets.Diamond ? props.tickets.Diamond.price : 0;
+
         const _totalPrice =
-            silverAmount * prices.Silver + goldAmount * prices.Gold + platinumAmount * prices.Platinum + diamondAmount * prices.Diamond;
+            silverAmount * silverPrice + goldAmount * goldPrice + platinumAmount * platinumPrice + diamondAmount * diamondPrice;
 
         setTotalPrice(_totalPrice);
     };
@@ -80,46 +76,54 @@ const Purchase = () => {
 
     return (
         <div>
-            <TicketCard
-                name="Silver"
-                description="Lorem ipsum dolor"
-                image={TicketImg}
-                amount={silverAmount}
-                changeAmount={(amount) => changeAmountOfTickets("silver", amount)}
-                ethPrice={prices.Silver}
-                ethUSDRatio={ethUSDRatio}
-                available={ticketsAvailable[0]}
-            />
-            <TicketCard
-                name="Gold"
-                description="Lorem ipsum dolor"
-                image={TicketImg}
-                amount={goldAmount}
-                changeAmount={(amount) => changeAmountOfTickets("gold", amount)}
-                ethPrice={prices.Gold}
-                ethUSDRatio={ethUSDRatio}
-                available={ticketsAvailable[1]}
-            />
-            <TicketCard
-                name="Platinum"
-                description="Lorem ipsum dolor"
-                image={TicketImg}
-                amount={platinumAmount}
-                changeAmount={(amount) => changeAmountOfTickets("platinum", amount)}
-                ethPrice={prices.Platinum}
-                ethUSDRatio={ethUSDRatio}
-                available={ticketsAvailable[2]}
-            />
-            <TicketCard
-                name="Diamond"
-                description="Lorem ipsum dolor"
-                image={TicketImg}
-                amount={diamondAmount}
-                changeAmount={(amount) => changeAmountOfTickets("diamond", amount)}
-                ethPrice={prices.Diamond}
-                ethUSDRatio={ethUSDRatio}
-                available={ticketsAvailable[3]}
-            />
+            {props.tickets.Silver ? (
+                <TicketCard
+                    name="Silver"
+                    description={props.tickets.Silver.metadata.description}
+                    image={props.tickets.Silver.metadata.url}
+                    amount={silverAmount}
+                    changeAmount={(amount) => changeAmountOfTickets("silver", amount)}
+                    ethPrice={props.tickets.Silver.price}
+                    ethUSDRatio={ethUSDRatio}
+                    available={props.tickets.Silver.amount}
+                />
+            ) : null}
+            {props.tickets.Gold ? (
+                <TicketCard
+                    name="Gold"
+                    description={props.tickets.Gold.metadata.description}
+                    image={props.tickets.Gold.metadata.url}
+                    amount={goldAmount}
+                    changeAmount={(amount) => changeAmountOfTickets("gold", amount)}
+                    ethPrice={props.tickets.Gold.price}
+                    ethUSDRatio={ethUSDRatio}
+                    available={props.tickets.Gold.amount}
+                />
+            ) : null}
+            {props.tickets.Platinum ? (
+                <TicketCard
+                    name="Platinum"
+                    description={props.tickets.Platinum.metadata.description}
+                    image={props.tickets.Platinum.metadata.url}
+                    amount={platinumAmount}
+                    changeAmount={(amount) => changeAmountOfTickets("platinum", amount)}
+                    ethPrice={props.tickets.Platinum.price}
+                    ethUSDRatio={ethUSDRatio}
+                    available={props.tickets.Platinum.amount}
+                />
+            ) : null}
+            {props.tickets.Diamond ? (
+                <TicketCard
+                    name="Diamond"
+                    description={props.tickets.Diamond.metadata.description}
+                    image={props.tickets.Diamond.metadata.url}
+                    amount={diamondAmount}
+                    changeAmount={(amount) => changeAmountOfTickets("diamond", amount)}
+                    ethPrice={props.tickets.Diamond.price}
+                    ethUSDRatio={ethUSDRatio}
+                    available={props.tickets.Diamond.amount}
+                />
+            ) : null}
             {silverAmount || goldAmount || platinumAmount || diamondAmount ? (
                 user ? (
                     walletAddress ? (
@@ -146,13 +150,13 @@ const Purchase = () => {
             <PurchaseTicketsModal
                 show={isModalOpened}
                 silverAmount={silverAmount}
-                silverPrice={prices.Silver}
+                silverPrice={props.tickets.Silver ? props.tickets.Silver.price : null}
                 goldAmount={goldAmount}
-                goldPrice={prices.Gold}
+                goldPrice={props.tickets.Gold ? props.tickets.Gold.price : null}
                 platinumAmount={platinumAmount}
-                platinumPrice={prices.Platinum}
+                platinumPrice={props.tickets.Platinum ? props.tickets.Platinum.price : null}
                 diamondAmount={diamondAmount}
-                diamondPrice={prices.Diamond}
+                diamondPrice={props.tickets.Diamond ? props.tickets.Diamond.price : null}
                 totalPrice={totalPrice}
                 ethUSDRatio={ethUSDRatio}
                 onHide={() => setIsModalOpened(false)}
