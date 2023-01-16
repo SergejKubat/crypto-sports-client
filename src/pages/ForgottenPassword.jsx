@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import validator from "validator";
 
 import Input from "../components/Form/Input";
@@ -8,18 +10,32 @@ import Button from "../components/Form/Button";
 const ForgottenPasswordPage = () => {
     const [email, setEmail] = useState("");
     const [touched, setTouched] = useState(false);
-    //const [error, setError] = useState("");
+    const [error, setError] = useState("");
+
+    const navigate = useNavigate();
 
     const sendResetPasswordRequest = (e) => {
         e.preventDefault();
 
         setTouched(true);
+        setError("");
 
         if (!validator.isEmail(email)) {
             return;
         }
 
-        console.log("reset password");
+        const data = {
+            email: email
+        };
+
+        axios
+            .post(`${import.meta.env.VITE_API_URL}/resetPasswordRequests`, data)
+            .then(() => {
+                navigate("/");
+            })
+            .catch((error) => {
+                setError(error.response.data.message);
+            });
     };
 
     return (
@@ -38,6 +54,11 @@ const ForgottenPasswordPage = () => {
                         errorMessage="Email address is not valid."
                         validateCb={(value) => value && validator.isEmail(value)}
                     />
+                    {error ? (
+                        <p className="input-error" style={{ textAlign: "center" }}>
+                            {error}
+                        </p>
+                    ) : null}
                     <Button text="Submit" />
                 </form>
             </div>

@@ -56,13 +56,13 @@ const App = () => {
                     <Header />
                     <Routes>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="login" element={user ? <Navigate to="/profile" /> : <LoginPage />} />
-                        <Route path="register" element={user ? <Navigate to="/profile" /> : <RegisterPage />} />
-                        <Route path="events/:id" element={<EventPage />} />
-                        <Route path="organizers/:id" element={<OrganizerPage />} />
-                        <Route path="category/:name" element={<CategoryPage />} />
-                        <Route path="forgotten-password" element={user ? <Navigate to="/profile" /> : <ForgottenPasswordPage />} />
-                        <Route path="reset-password" element={user ? <Navigate to="/profile" /> : <ResetPasswordPage />} />
+                        <Route path="/login" element={user ? <Navigate to="/profile" /> : <LoginPage />} />
+                        <Route path="/register" element={user ? <Navigate to="/profile" /> : <RegisterPage />} />
+                        <Route path="/events/:id" element={<EventPage />} />
+                        <Route path="/organizers/:id" element={<OrganizerPage />} />
+                        <Route path="/category/:name" element={<CategoryPage />} />
+                        <Route path="/forgotten-password" element={user ? <Navigate to="/profile" /> : <ForgottenPasswordPage />} />
+                        <Route path="/reset-password/:code" element={user ? <Navigate to="/profile" /> : <ResetPasswordPage />} />
                         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />}></Route>
                         <Route path="/my-tickets" element={user ? <MyTicketsPage /> : <Navigate to="/login" />} />
                         <Route path="*" element={<NotFoundPage />} />

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import validator from "validator";
 
 import Input from "../components/Form/Input";
@@ -11,18 +12,17 @@ const ResetPasswordPage = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [expired, setExpired] = useState(false);
     const [touched, setTouched] = useState(false);
-    //const [error, setError] = useState("");
+    const [error, setError] = useState("");
 
-    const { search } = useLocation();
+    const params = useParams();
 
     const navigate = useNavigate();
-
-    const query = useMemo(() => new URLSearchParams(search), [search]);
 
     const resetPassword = (e) => {
         e.preventDefault();
 
         setTouched(true);
+        setError("");
 
         if (!validator.isStrongPassword(password)) {
             return;
@@ -32,18 +32,40 @@ const ResetPasswordPage = () => {
             return;
         }
 
-        console.log("reset password");
+        const data = {
+            id: params.code,
+            password: password
+        };
 
-        navigate("/profile");
+        axios
+            .post(`${import.meta.env.VITE_API_URL}/reset-password`, data)
+            .then(() => {
+                navigate("/login");
+            })
+            .catch((error) => {
+                setError(error.response.data.message);
+            });
     };
 
     useEffect(() => {
-        const resetPasswordCode = query.get("code");
+        axios
+            .get(`${import.meta.env.VITE_API_URL}/resetPasswordRequests/${params.code}`)
+            .then((response) => {
+                const TWO_HOURS = 2 * 60 * 60 * 1000;
 
-        console.log(`code: ${resetPasswordCode}`);
+                const currentDate = new Date();
+                const requestDate = new Date(response.data.createdAt);
 
-        setExpired(resetPasswordCode ? true : false);
-    }, [query]);
+                // if date difference is greather than 2 hours
+                if (currentDate.getTime() - requestDate > TWO_HOURS) {
+                    setExpired(true);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                navigate("/");
+            });
+    }, [params.code]);
 
     return (
         <section className="reset-password">
@@ -82,6 +104,11 @@ const ResetPasswordPage = () => {
                                 errorMessage="Passwords do not match."
                                 validateCb={(value) => value && value === password}
                             />
+                            {error ? (
+                                <p className="input-error" style={{ textAlign: "center" }}>
+                                    {error}
+                                </p>
+                            ) : null}
                             <Button text="Reset Password" />
                         </form>
                     </React.Fragment>
