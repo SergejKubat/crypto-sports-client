@@ -13,6 +13,7 @@ import { formatDate } from "../utils/date";
 
 const EventPage = () => {
     const [event, setEvent] = useState();
+    const [relatedEvents, setRelatedEvents] = useState([]);
 
     const params = useParams();
 
@@ -21,6 +22,19 @@ const EventPage = () => {
             .get(`${import.meta.env.VITE_API_URL}/events/${params.id}`)
             .then((response) => {
                 setEvent(response.data);
+
+                axios
+                    .get(`${import.meta.env.VITE_API_URL}/events?category=Football`)
+                    .then((response) => {
+                        const _relatedEvents = response.data;
+
+                        const _filteredRelatedEvents = _relatedEvents.filter((event) => event._id !== params.id);
+
+                        setRelatedEvents(_filteredRelatedEvents);
+                    })
+                    .catch((error) => {
+                        console.log(error.response);
+                    });
             })
             .catch((error) => {
                 console.log(error.response);
@@ -63,7 +77,13 @@ const EventPage = () => {
                             <p>{event.description}</p>
                             <h2 className="mt-5">Tickets</h2>
                             <Purchase tickets={event.tickets} />
-                            <EventList heading="Related Events" style={{ marginTop: "3.6rem", padding: "0rem" }} />
+                            {relatedEvents.length > 0 ? (
+                                <EventList
+                                    heading="Related Events"
+                                    events={relatedEvents}
+                                    style={{ marginTop: "3.6rem", padding: "0rem" }}
+                                />
+                            ) : null}
                         </div>
                     </div>
                 </React.Fragment>
