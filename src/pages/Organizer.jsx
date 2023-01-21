@@ -10,14 +10,28 @@ import Spinner from "../components/Spinner/Spinner";
 
 const OrganizerPage = () => {
     const [organizer, setOrganizer] = useState(null);
+    const [events, setEvents] = useState([]);
 
     const params = useParams();
 
     useEffect(() => {
+        const organizerUrl = `${import.meta.env.VITE_API_URL}/organizers/${params.id}`;
+
         axios
-            .get(`${import.meta.env.VITE_API_URL}/organizers/${params.id}`)
+            .get(organizerUrl)
             .then((response) => {
-                setOrganizer(response.data);
+                const _organizer = response.data;
+
+                setOrganizer(_organizer);
+
+                axios
+                    .get(`${organizerUrl}/events`)
+                    .then((response) => {
+                        setEvents(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error.response);
+                    });
             })
             .catch((error) => {
                 console.log(error.response);
@@ -68,7 +82,13 @@ const OrganizerPage = () => {
                         <div className="organizer-content">
                             <h2>Info</h2>
                             <p>{organizer.description}</p>
-                            <EventList heading="Events (5)" style={{ marginTop: "3.6rem", padding: "0rem" }} />
+                            {events.length > 0 ? (
+                                <EventList
+                                    heading={`Events (${events.length})`}
+                                    events={events}
+                                    style={{ marginTop: "3.6rem", padding: "0rem" }}
+                                />
+                            ) : null}
                         </div>
                     </div>
                 </React.Fragment>

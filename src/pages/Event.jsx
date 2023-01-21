@@ -13,6 +13,7 @@ import { formatDate } from "../utils/date";
 
 const EventPage = () => {
     const [event, setEvent] = useState();
+    const [organizer, setOrganizer] = useState();
     const [relatedEvents, setRelatedEvents] = useState([]);
 
     const params = useParams();
@@ -21,10 +22,23 @@ const EventPage = () => {
         axios
             .get(`${import.meta.env.VITE_API_URL}/events/${params.id}`)
             .then((response) => {
-                setEvent(response.data);
+                const _event = response.data;
 
+                setEvent(_event);
+
+                // get organizer
                 axios
-                    .get(`${import.meta.env.VITE_API_URL}/events?category=Football`)
+                    .get(`${import.meta.env.VITE_API_URL}/organizers/${_event.organizer}`)
+                    .then((response) => {
+                        setOrganizer(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error.response);
+                    });
+
+                // get related events
+                axios
+                    .get(`${import.meta.env.VITE_API_URL}/events?category=${_event.category}`)
                     .then((response) => {
                         const _relatedEvents = response.data;
 
@@ -50,9 +64,11 @@ const EventPage = () => {
                             <div className="event-info">
                                 <p>{event.category}</p>
                                 <h1>{event.name}</h1>
-                                <p>
-                                    <Link to={`/organizers/id`}>Organizer name</Link>
-                                </p>
+                                {organizer ? (
+                                    <p>
+                                        <Link to={`/organizers/${organizer._id}`}>{organizer.name}</Link>
+                                    </p>
+                                ) : null}
                             </div>
                             <img src={event.image} alt={event.name} className="event-image" />
                         </div>
