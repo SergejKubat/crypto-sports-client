@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { GoSearch } from "react-icons/go";
 
 import ResultItem from "./Result";
@@ -10,28 +10,28 @@ const Search = () => {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
 
-    const navigate = useNavigate();
-
     const getResults = (e) => {
-        const _query = e.target.value.trim();
+        const q = e.target.value.trim();
 
-        setQuery(_query);
+        setQuery(q);
 
-        if (!_query) {
+        if (!q) {
             setResults([]);
             return;
         }
 
-        // get results
-        setResults([1, 2, 3, 4]);
+        axios
+            .get(`${import.meta.env.VITE_API_URL}/search?q=${q}`)
+            .then((response) => {
+                setResults(response.data);
+            })
+            .catch((error) => {
+                console.log(error.response);
+            });
     };
 
     const submit = (e) => {
         e.preventDefault();
-
-        if (query) {
-            navigate(`/search?q=${query}`);
-        }
     };
 
     return (
@@ -40,28 +40,19 @@ const Search = () => {
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, quidem.</p>
             <form autoComplete="off" noValidate className="search-form" onSubmit={submit}>
                 <div className="search-field">
-                    <input
-                        type="text"
-                        name="search"
-                        className="search-input"
-                        placeholder="Search for events"
-                        value={query}
-                        onChange={getResults}
-                    />
+                    <input type="text" name="search" className="search-input" placeholder="Search for events" onChange={getResults} />
                     <GoSearch className="search-input-icon" />
                     <Button text="Search" style={{ margin: "0rem" }} />
 
                     {results.length > 0 ? (
                         <ul className="search-results">
                             {results.map((result) => (
-                                <ResultItem key={result} />
+                                <ResultItem key={result._id} result={result} />
                             ))}
                         </ul>
                     ) : query.length > 0 ? (
                         <ul className="search-results">
-                            <ul className="search-results">
-                                <p>No results.</p>
-                            </ul>
+                            <p>No results.</p>
                         </ul>
                     ) : null}
                 </div>
