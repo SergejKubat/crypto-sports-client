@@ -92,7 +92,7 @@ const EventPage = () => {
                             <h2>Info</h2>
                             <p>{event.description}</p>
                             <h2 className="mt-5">Tickets</h2>
-                            <Purchase tickets={event.tickets} />
+                            <Purchase tickets={event.tickets} contractAddress={event.contractAddress} />
                             {relatedEvents.length > 0 ? (
                                 <EventList
                                     heading="Related Events"

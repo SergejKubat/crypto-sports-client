@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import Web3 from "web3";
 import { Modal, CloseButton, Row, Col } from "react-bootstrap";
 
 import SuccessfulPurchase from "../Purchase/SuccessfulPurchase";
@@ -7,17 +8,48 @@ import PurchaseTicketRow from "../Purchase/PurchaseTicketRow";
 import Spinner from "../Spinner/Spinner";
 import Button from "../Form/Button";
 
+import SportEventRegistry from "../../assets/contracts/SportEventRegistry.json";
+
 const PurchaseTicketsModal = (props) => {
     const [isPurchasing, setIsPurchasing] = useState(false);
     const [isPurchased, setIsPurchased] = useState(false);
 
-    const purchase = () => {
-        setIsPurchasing(true);
+    const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_NODE_RPC_URL));
 
-        setTimeout(() => {
+    const purchase = () => {
+        //setIsPurchasing(true);
+
+        // prepare arguments
+        const ticketAmounts = [props.silverAmount, props.goldAmount, props.platinumAmount, props.diamondAmount];
+
+        const ticketIds = [];
+
+        for (let i = 0; i < ticketAmounts.length - 1; i++) {
+            for (let j = 0; j < ticketAmounts[i]; j++) {
+                ticketIds.push(i);
+            }
+        }
+
+        const totalPriceWei = web3.utils.toWei(props.totalPrice.toPrecision(10));
+
+        // call contract method
+        const sportEventRegistry = new web3.eth.Contract(SportEventRegistry.abi, SportEventRegistry.address);
+
+        sportEventRegistry.methods.buyTickets("eventAddress", ticketIds).send({ value: totalPriceWei }, (err, data) => {
+            if (err) {
+                console.log("Error: ", err);
+                return;
+            }
+
+            if (data) {
+                console.log("Data: ", data);
+            }
+        });
+
+        /*setTimeout(() => {
             setIsPurchasing(false);
             setIsPurchased(true);
-        }, 2000);
+        }, 2000);*/
     };
 
     return (

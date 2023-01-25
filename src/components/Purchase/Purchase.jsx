@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import axios from "axios";
+import Web3 from "web3";
 import { useNavigate } from "react-router-dom";
 
 import TicketCard from "../Cards/TicketCard";
@@ -11,12 +12,14 @@ import ConnectWalletModal from "../Modal/ConnectWalletModal";
 import { UserContext } from "../../context/UserContext";
 import { WalletContext } from "../../context/WalletContext";
 
+import SportEventRegistry from "../../assets/contracts/SportEventRegistry.json";
+
 const Purchase = (props) => {
     const [silverAmount, setSilverAmount] = useState(0);
     const [goldAmount, setGoldAmount] = useState(0);
     const [platinumAmount, setPlatinumAmount] = useState(0);
     const [diamondAmount, setDiamondAmount] = useState(0);
-    const [ticketsAvailable /*, setTicketsAvailable*/] = useState([100, 50, 25, 10]);
+    const [ticketsAvailable, setTicketsAvailable] = useState([]);
     const [ethUSDRatio, setEthUSDRatio] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [isModalOpened, setIsModalOpened] = useState(false);
@@ -26,6 +29,8 @@ const Purchase = (props) => {
 
     const { user } = useContext(UserContext);
     const { walletAddress } = useContext(WalletContext);
+
+    const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_NODE_RPC_URL));
 
     const changeAmountOfTickets = (type, amount) => {
         switch (type) {
@@ -72,6 +77,22 @@ const Purchase = (props) => {
             .catch((error) => {
                 console.log(error.response.data);
             });
+
+        // get available tickets
+        const sportEventRegistry = new web3.eth.Contract(SportEventRegistry.abi, SportEventRegistry.address);
+
+        //console.log("contract: ", sportEventRegistry);
+
+        sportEventRegistry.methods.getAmounts(props.contractAddress, [0, 1, 2, 3]).call((err, amounts) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            if (amounts) {
+                setTicketsAvailable(amounts.map((amount) => parseInt(amount)));
+            }
+        });
     }, []);
 
     return (
@@ -85,7 +106,7 @@ const Purchase = (props) => {
                     changeAmount={(amount) => changeAmountOfTickets("silver", amount)}
                     ethPrice={props.tickets.Silver.price}
                     ethUSDRatio={ethUSDRatio}
-                    available={props.tickets.Silver.amount}
+                    available={ticketsAvailable[0]}
                 />
             ) : null}
             {props.tickets.Gold ? (
@@ -97,7 +118,7 @@ const Purchase = (props) => {
                     changeAmount={(amount) => changeAmountOfTickets("gold", amount)}
                     ethPrice={props.tickets.Gold.price}
                     ethUSDRatio={ethUSDRatio}
-                    available={props.tickets.Gold.amount}
+                    available={ticketsAvailable[1]}
                 />
             ) : null}
             {props.tickets.Platinum ? (
@@ -109,7 +130,7 @@ const Purchase = (props) => {
                     changeAmount={(amount) => changeAmountOfTickets("platinum", amount)}
                     ethPrice={props.tickets.Platinum.price}
                     ethUSDRatio={ethUSDRatio}
-                    available={props.tickets.Platinum.amount}
+                    available={ticketsAvailable[2]}
                 />
             ) : null}
             {props.tickets.Diamond ? (
@@ -121,7 +142,7 @@ const Purchase = (props) => {
                     changeAmount={(amount) => changeAmountOfTickets("diamond", amount)}
                     ethPrice={props.tickets.Diamond.price}
                     ethUSDRatio={ethUSDRatio}
-                    available={props.tickets.Diamond.amount}
+                    available={ticketsAvailable[3]}
                 />
             ) : null}
             {silverAmount || goldAmount || platinumAmount || diamondAmount ? (
@@ -150,13 +171,13 @@ const Purchase = (props) => {
             <PurchaseTicketsModal
                 show={isModalOpened}
                 silverAmount={silverAmount}
-                silverPrice={props.tickets.Silver ? props.tickets.Silver.price : null}
+                silverPrice={props.tickets.Silver ? props.tickets.Silver.price : 0}
                 goldAmount={goldAmount}
-                goldPrice={props.tickets.Gold ? props.tickets.Gold.price : null}
+                goldPrice={props.tickets.Gold ? props.tickets.Gold.price : 0}
                 platinumAmount={platinumAmount}
-                platinumPrice={props.tickets.Platinum ? props.tickets.Platinum.price : null}
+                platinumPrice={props.tickets.Platinum ? props.tickets.Platinum.price : 0}
                 diamondAmount={diamondAmount}
-                diamondPrice={props.tickets.Diamond ? props.tickets.Diamond.price : null}
+                diamondPrice={props.tickets.Diamond ? props.tickets.Diamond.price : 0}
                 totalPrice={totalPrice}
                 ethUSDRatio={ethUSDRatio}
                 onHide={() => setIsModalOpened(false)}
