@@ -21,7 +21,7 @@ const CategoryPage = () => {
             .catch((error) => {
                 console.log(error.response);
             });
-    }, []);
+    }, [name]);
 
     return (
         <section>
