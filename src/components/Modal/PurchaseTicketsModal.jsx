@@ -14,17 +14,15 @@ const PurchaseTicketsModal = (props) => {
     const [isPurchasing, setIsPurchasing] = useState(false);
     const [isPurchased, setIsPurchased] = useState(false);
 
-    const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_NODE_RPC_URL));
+    const web3 = new Web3(window.ethereum);
 
     const purchase = () => {
-        //setIsPurchasing(true);
-
         // prepare arguments
         const ticketAmounts = [props.silverAmount, props.goldAmount, props.platinumAmount, props.diamondAmount];
 
         const ticketIds = [];
 
-        for (let i = 0; i < ticketAmounts.length - 1; i++) {
+        for (let i = 0; i < ticketAmounts.length; i++) {
             for (let j = 0; j < ticketAmounts[i]; j++) {
                 ticketIds.push(i);
             }
@@ -32,24 +30,23 @@ const PurchaseTicketsModal = (props) => {
 
         const totalPriceWei = web3.utils.toWei(props.totalPrice.toPrecision(10));
 
-        // call contract method
+        // create contract instance
         const sportEventRegistry = new web3.eth.Contract(SportEventRegistry.abi, SportEventRegistry.address);
 
-        sportEventRegistry.methods.buyTickets("eventAddress", ticketIds).send({ value: totalPriceWei }, (err, data) => {
-            if (err) {
-                console.log("Error: ", err);
-                return;
-            }
+        // sign tx and call contract method
+        sportEventRegistry.methods
+            .buyTickets(props.contractAddress, ticketIds)
+            .send({ from: window.ethereum.selectedAddress, value: totalPriceWei })
+            .then(() => {
+                setIsPurchasing(true);
 
-            if (data) {
-                console.log("Data: ", data);
-            }
-        });
-
-        /*setTimeout(() => {
-            setIsPurchasing(false);
-            setIsPurchased(true);
-        }, 2000);*/
+                // 2 seconds delay
+                setTimeout(() => {
+                    setIsPurchasing(false);
+                    setIsPurchased(true);
+                }, 2000);
+            })
+            .catch((error) => console.log(error));
     };
 
     return (

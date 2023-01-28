@@ -63,6 +63,22 @@ const Purchase = (props) => {
         setTotalPrice(_totalPrice);
     };
 
+    const getAvailableTickets = () => {
+        // create contract instance
+        const sportEventRegistry = new web3.eth.Contract(SportEventRegistry.abi, SportEventRegistry.address);
+
+        // call contract method
+        sportEventRegistry.methods
+            .getAmounts(props.contractAddress, [0, 1, 2, 3])
+            .call()
+            .then((amounts) => {
+                setTicketsAvailable(amounts.map((amount) => parseInt(amount)));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     useEffect(() => {
         calculateTotalPrice();
     }, [silverAmount, goldAmount, platinumAmount, diamondAmount]);
@@ -78,21 +94,7 @@ const Purchase = (props) => {
                 console.log(error.response.data);
             });
 
-        // get available tickets
-        const sportEventRegistry = new web3.eth.Contract(SportEventRegistry.abi, SportEventRegistry.address);
-
-        //console.log("contract: ", sportEventRegistry);
-
-        sportEventRegistry.methods.getAmounts(props.contractAddress, [0, 1, 2, 3]).call((err, amounts) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-
-            if (amounts) {
-                setTicketsAvailable(amounts.map((amount) => parseInt(amount)));
-            }
-        });
+        getAvailableTickets();
     }, []);
 
     return (
@@ -170,6 +172,7 @@ const Purchase = (props) => {
             ) : null}
             <PurchaseTicketsModal
                 show={isModalOpened}
+                contractAddress={props.contractAddress}
                 silverAmount={silverAmount}
                 silverPrice={props.tickets.Silver ? props.tickets.Silver.price : 0}
                 goldAmount={goldAmount}
