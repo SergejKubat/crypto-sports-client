@@ -1,8 +1,10 @@
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+export const daysFullName = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
-const formatTime = (date) => {
+export const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+export const formatTime = (date) => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
 
