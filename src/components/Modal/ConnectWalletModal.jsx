@@ -4,10 +4,11 @@ import axios from "axios";
 import Web3 from "web3";
 import { Modal, CloseButton } from "react-bootstrap";
 
-import MetaMaskIcon from "../../assets/images/icons/metamask.webp";
 import Button from "../Form/Button";
 
 import { WalletContext } from "../../context/WalletContext";
+
+import MetaMaskIcon from "../../assets/images/icons/metamask.webp";
 
 const ConnectWalletModal = (props) => {
     const { setWalletAddress } = useContext(WalletContext);

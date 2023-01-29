@@ -7,7 +7,7 @@ import PurchasedTicketCard from "../../components/Cards/PurchasedTicketCard";
 const MyTickets = () => {
     const [tickets, setTickets] = useState([]);
 
-    useEffect(() => {
+    const fetchTickets = () => {
         axios
             .get(`${import.meta.env.VITE_API_URL}/tickets`, { withCredentials: true })
             .then((response) => {
@@ -16,14 +16,16 @@ const MyTickets = () => {
             .catch((error) => {
                 console.log(error.response.data);
             });
-    }, []);
+    };
+
+    useEffect(fetchTickets, []);
 
     return (
         <section className="my-tickets">
             <div className="my-tickets-container">
                 <h1 style={{ marginBottom: "5rem" }}>My Tickets {tickets.length > 0 ? `(${tickets.length})` : null}</h1>
                 {tickets.length > 0 ? (
-                    tickets.map((ticket) => <PurchasedTicketCard key={ticket._id} ticket={ticket} />)
+                    tickets.map((ticket) => <PurchasedTicketCard key={ticket._id} ticket={ticket} cb={fetchTickets} />)
                 ) : (
                     <div style={{ height: "30vh" }}>
                         <p className="text-center" style={{ fontSize: "1.6rem" }}>

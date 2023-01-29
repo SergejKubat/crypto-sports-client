@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
+import QRCodeModal from "../Modal/QRCodeModal";
 import Button from "../Form/Button";
 
 import { formatTime, daysFullName, months } from "../../utils/date";
@@ -7,6 +8,8 @@ import { formatTime, daysFullName, months } from "../../utils/date";
 import { ticketTypesMap } from "../../data/ticketTypes";
 
 const PurchasedTicketCard = (props) => {
+    const [isQRCodeModalOpened, setIsQRCodeModalOpened] = useState(false);
+
     const ticketType = ticketTypesMap[props.ticket.type];
 
     const eventStartDate = new Date(props.ticket.event.startDate);
@@ -38,9 +41,23 @@ const PurchasedTicketCard = (props) => {
                 <p className="purchased-ticket-card-description">{props.ticket.event.tickets[ticketType].metadata.description}</p>
             </div>
             <div className="purchased-ticket-card-actions">
-                <Button text="Transfer" />
-                <Button text="QR Code" />
+                {props.ticket.used ? (
+                    <p style={{ fontSize: "1.8rem" }}>Already used.</p>
+                ) : (
+                    <React.Fragment>
+                        <Button text="Transfer" style={{ width: "15rem", marginBottom: "2rem" }} />
+                        <Button text="QR Code" style={{ width: "15rem" }} onClick={() => setIsQRCodeModalOpened(true)} />
+                    </React.Fragment>
+                )}
             </div>
+            <QRCodeModal
+                show={isQRCodeModalOpened}
+                ticketId={props.ticket._id}
+                onHide={() => {
+                    setIsQRCodeModalOpened(false);
+                    props.cb();
+                }}
+            />
         </div>
     );
 };
