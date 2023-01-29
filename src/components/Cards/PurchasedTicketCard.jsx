@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import TransferModal from "../Modal/TransferModal";
 import QRCodeModal from "../Modal/QRCodeModal";
 import Button from "../Form/Button";
 
@@ -8,6 +9,7 @@ import { formatTime, daysFullName, months } from "../../utils/date";
 import { ticketTypesMap } from "../../data/ticketTypes";
 
 const PurchasedTicketCard = (props) => {
+    const [isTransferModalOpened, setIsTransferModalOpened] = useState(false);
     const [isQRCodeModalOpened, setIsQRCodeModalOpened] = useState(false);
 
     const ticketType = ticketTypesMap[props.ticket.type];
@@ -45,11 +47,23 @@ const PurchasedTicketCard = (props) => {
                     <p style={{ fontSize: "1.8rem" }}>Already used.</p>
                 ) : (
                     <React.Fragment>
-                        <Button text="Transfer" style={{ width: "15rem", marginBottom: "2rem" }} />
+                        <Button
+                            text="Transfer"
+                            style={{ width: "15rem", marginBottom: "2rem" }}
+                            onClick={() => setIsTransferModalOpened(true)}
+                        />
                         <Button text="QR Code" style={{ width: "15rem" }} onClick={() => setIsQRCodeModalOpened(true)} />
                     </React.Fragment>
                 )}
             </div>
+            <TransferModal
+                show={isTransferModalOpened}
+                ticket={props.ticket}
+                onHide={() => {
+                    setIsTransferModalOpened(false);
+                    props.cb();
+                }}
+            />
             <QRCodeModal
                 show={isQRCodeModalOpened}
                 ticketId={props.ticket._id}
