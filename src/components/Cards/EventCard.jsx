@@ -15,7 +15,7 @@ const EventCard = (props) => {
                 <div className="event-card-content">
                     <p className="event-card-date">{formatDate(props.event.startDate)}</p>
                     <p className="event-card-name">{props.event.name}</p>
-                    <p className="event-card-location">{props.location}</p>
+                    <p className="event-card-location">{props.event.location}</p>
                 </div>
             </Link>
         </li>
