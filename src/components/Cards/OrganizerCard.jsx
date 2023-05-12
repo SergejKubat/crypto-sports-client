@@ -10,7 +10,7 @@ const OrganizerCard = (props) => {
                     <img src={props.organizer.image} alt={props.organizer.name} className="organizer-card-img" />
                     <div className="organizer-card-details">
                         <p className="organizer-card-name">{props.organizer.name}</p>
-                        <p className="organizer-card-events">{props.organizer.eventsCount} Events</p>
+                        <p className="organizer-card-events">{props.organizer.eventsCount ? props.organizer.eventsCount : 0} Events</p>
                     </div>
                 </figure>
             </Link>

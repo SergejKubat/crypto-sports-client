@@ -8,6 +8,7 @@ import Input from "../components/Form/Input";
 import Button from "../components/Form/Button";
 
 import { UserContext } from "../context/UserContext";
+import { WalletContext } from "../context/WalletContext";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -18,6 +19,8 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const { setUser } = useContext(UserContext);
+
+    const { setWalletAddress } = useContext(WalletContext);
 
     const login = (e) => {
         e.preventDefault();
@@ -42,6 +45,8 @@ const LoginPage = () => {
             .post(`${import.meta.env.VITE_API_URL}/login`, data, { withCredentials: true })
             .then((response) => {
                 setUser(response.data);
+
+                setWalletAddress("");
 
                 window.localStorage.setItem("user", JSON.stringify(response.data));
 
